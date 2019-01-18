@@ -1,2 +1,4 @@
 requests==2.21.0
 beautifulsoup4==4.7.1
+splinter==0.10.0
+selenium==3.141.0
