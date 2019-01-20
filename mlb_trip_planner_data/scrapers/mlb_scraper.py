@@ -1,6 +1,8 @@
+import json
+
 from bs4 import BeautifulSoup
 from splinter import Browser
-from utils import get_content_list, date_string_to_timestamp
+from utils import date_string_to_timestamp, get_content_list, write_dict_list_to_file
 
 
 def get_mlb_games(browser, team, year, month):
@@ -25,21 +27,9 @@ def get_mlb_games(browser, team, year, month):
     return games
 
 
-def write_to_file(data, path):
-    print(data)
-    with open(path, 'w') as f:
-        for d in data:
-            print("-------")
-            # print(d)
-            n = d.find('div', {'class': 'opponent-name'})
-            print(n)
-            #f.write(d)
-
 browser = Browser('chrome', headless=True)
-data = get_mlb_games(browser, 'dodgers', 2019, 4)
-for d in data:
-    print(d)
-browser.quit()
-
-
-# write_to_file(data, 'test_data')
+try:
+    data = get_mlb_games(browser, 'dodgers', 2019, 4)
+    write_dict_list_to_file(data, 'here.jsonl')
+finally:
+    browser.quit()

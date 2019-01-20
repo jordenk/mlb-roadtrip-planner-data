@@ -1,4 +1,5 @@
-from datetime import datetime, tzinfo, time
+import json
+from datetime import datetime
 from pytz import timezone
 
 def get_content_list(soup_list):
@@ -30,3 +31,8 @@ def date_string_to_timestamp(year, month, day, time_str):
     dt = datetime(year=year, month=month, day=day, hour=time.hour, minute=time.minute)
     local_dt = timezone(tz).localize(dt)
     return int(local_dt.timestamp())
+
+def write_dict_list_to_file(data, path):
+    with open(path, 'a') as f:
+        json_list = map(lambda d: json.dumps(d) + '\n', data)
+        f.writelines(json_list)
