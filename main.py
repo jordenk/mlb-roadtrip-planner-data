@@ -4,6 +4,7 @@ import os
 from bs4 import BeautifulSoup
 from data_types.team import Team
 
+
 mlb_teams = [
     Team("angels"),
     Team("astros"),

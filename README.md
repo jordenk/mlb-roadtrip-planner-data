@@ -7,3 +7,7 @@ Major Leagues schedules are derived from CSV drops. The MLB online schedules pop
 
 ## AAA
 AAA schedules are scrapbed from online schedues.
+
+
+# Testing
+python3 -m pytest
