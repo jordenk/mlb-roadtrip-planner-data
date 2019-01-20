@@ -1,4 +1,9 @@
+"""
+Utility functions used for different scrapers.
+"""
+
 import json
+import logging
 from datetime import datetime
 from pytz import timezone
 
@@ -23,6 +28,12 @@ def date_string_to_timestamp(year, month, day, time_str):
     month = int(month)
     day = int(day)
 
+
+    if time_str == 'TBD':
+        logging.info("Found a TBD game. Timestamp will be recorded as 3AM Eastern.")
+        dt = datetime(year=year, month=month, day=day, hour=3)
+        return int(timezone('US/EASTERN').localize(dt).timestamp())
+    
     time_arr = time_str.split(' ')
     assert len(time_arr) == 3
     time = datetime.strptime(' '.join(time_arr[:2]), '%I:%M %p')
@@ -36,3 +47,14 @@ def write_dict_list_to_file(data, path):
     with open(path, 'a') as f:
         json_list = map(lambda d: json.dumps(d) + '\n', data)
         f.writelines(json_list)
+
+class TeamScheduleScraperData:
+    """
+    Class used to group fields used for parallel functions.
+    """
+    def __init__(self, team, year, start_month, end_month, output_directory):
+        self.team = team
+        self.year = year
+        self.start_month = start_month
+        self.end_month = end_month
+        self.output_directory = output_directory
