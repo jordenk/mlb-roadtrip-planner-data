@@ -1,3 +1,17 @@
+# Description
+Used to plan MLB road trips.
+
+Complete:
+- MLB data extraction
+
+In-progress:
+- MLB data cleaning
+- Minor leagues data extraction
+
+Planned:
+- Populate Elasticsearch with game data, allowing map displays.
+- Populate Neo4j with game data and driving time between games.
+
 # Install dependencies
 `pip3 install -r requirements.txt`
 
