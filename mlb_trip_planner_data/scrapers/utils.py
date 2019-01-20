@@ -21,10 +21,12 @@ def date_string_to_timestamp(year, month, day, time_str):
     year = int(year)
     month = int(month)
     day = int(day)
+
     time_arr = time_str.split(' ')
     assert len(time_arr) == 3
     time = datetime.strptime(' '.join(time_arr[:2]), '%I:%M %p')
     tz = TZ_OFFSET_MAP[time_arr[2]]
+
     dt = datetime(year=year, month=month, day=day, hour=time.hour, minute=time.minute)
     local_dt = timezone(tz).localize(dt)
     return int(local_dt.timestamp())
