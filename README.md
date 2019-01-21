@@ -16,7 +16,8 @@ Planned:
 - Populate Neo4j with game data and driving time between games.
 
 # Install dependencies
-`pip3 install -r requirements.txt`
+## Python dependencies (3.6.5)
+`$ pip3 install -r requirements.txt`
 
 # Data Population
 ## MLB
