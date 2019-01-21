@@ -1,6 +1,9 @@
 # Description
 Used to plan MLB road trips.
 
+The scraping/extraction entry point is: `mlb_trip_planner_data/scrapers/multiprocess_runner.py`
+The runner uses the Selenium web driver with chrome to scrape baseball schedules. This is done in parallel. Selenium is not thread safe, so separate processes must be run. The number of process that can be run is NUMBER_OF_CORES - 1.
+
 Complete:
 - MLB data extraction
 
