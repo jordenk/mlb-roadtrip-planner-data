@@ -12,19 +12,21 @@ In-progress:
 - Minor leagues data extraction
 
 Planned:
+- Handle international games
 - Populate Elasticsearch with game data, allowing map displays.
 - Populate Neo4j with game data and driving time between games.
 
 # Install dependencies
-## Python dependencies (3.6.5)
-`$ pip3 install -r requirements.txt`
+## Python dependencies (3.7)
+$ pipenv install
+
+## Chrome driver
+Mac:
+`$ brew cask install chromedriver`
+TODO package this rather than requiring an install
 
 # Data Population
-## MLB
 `$ python3 mlb_trip_planner_data/scrapers/multiprocess_runner.py`
-
-## Minor
-AAA schedules are scrapbed from online schedues.
 
 ## Output
 Data is written to `raw_data/{level}/{year}/{team}.jsonl`

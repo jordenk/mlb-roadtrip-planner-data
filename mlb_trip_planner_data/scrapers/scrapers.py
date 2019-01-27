@@ -1,13 +1,43 @@
 """
-Scraper for Minor League games.
+Scraper functions for MLB and minor league games.
 """
-
 import logging
 import os
 import re
 
 from bs4 import BeautifulSoup
-from utils import date_string_to_timestamp
+from datetime import datetime
+from pytz import timezone
+
+
+def get_mlb_games(browser, team, year, month):
+    """
+    Scrapes one month of games from the calendar view. Returns a list of dicts.
+    """
+    games = []
+    link = f"https://www.mlb.com/{team}/schedule/{year}-{month}"
+    browser.visit(link)
+    date_rows = BeautifulSoup(browser.html, 'html.parser').findAll('td', {'class': 'regular-season'})
+    for row in date_rows:
+        is_home_game = 'home' in row.attrs.get('class')
+        day = row.find('div', {'class': 'day-of-month-label'}).contents[0]
+
+        # Get all games in a day- double header consideration.
+        opponent_names = get_content_list(row.find_all('div', {'class': 'opponent-name'}))
+        opponent_tri_codes = get_content_list(row.find_all('div', {'class': 'opponent-tricode'}))
+        primary_times = get_content_list(row.find_all('div', {'class': 'primary-time'}))
+
+        for on, otc, pt in zip(opponent_names, opponent_tri_codes, primary_times):
+            timestamp = 0
+            try:
+                timestamp = date_string_to_timestamp(year, month, day, pt)
+            except Exception as e:
+                logging.error(f"error processing data from: {link}")
+                logging.info(f"timestamp will be recorded as {timestamp}, see: {on} {otc} {pt}")
+                logging.error(str(e))
+            game = {'team': team.lower(), 'opponent': on.lower(), 'opponent_tri_codes': otc, 'is_home_game': is_home_game, 'game_start_time': timestamp}
+            games.append(game)
+    return games
 
 
 def write_minor_league_team_ids(browser, output_directory, link='http://www.milb.com/milb/info/affiliations.jsp'):
@@ -43,20 +73,6 @@ def write_minor_league_team_ids(browser, output_directory, link='http://www.milb
     write_to_file(aa_teams, os.path.join(output_directory, 'aa_ids.txt'))
     write_to_file(a_adv_teams, os.path.join(output_directory, 'a_adv_ids.txt'))
     write_to_file(a_teams, os.path.join(output_directory, 'a_ids.txt'))
-
-
-def write_to_file(data, path):
-    with open(path, 'w') as f:
-        newline_list = map(lambda d: d + '\n', data)
-        f.writelines(newline_list)
-
-
-def get_id(tag):
-    name = tag.text
-    # FIXME get ids working with BS
-    links = list(filter(lambda s: "http://www.milb.com/index.jsp?sid" in s, str(tag).split(" ")))
-    assert len(links) == 1, f"Could not parse the team id: {name}"
-    return links[0].split("sid=")[1].rstrip('"')
 
 
 def get_minor_league_games(browser, id, year, month):
@@ -109,6 +125,11 @@ def get_minor_league_games(browser, id, year, month):
     return games
 
 
+# Helper functions
+def get_content_list(soup_list):
+    return list(filter(lambda f: f, map(lambda m: m.string, soup_list)))
+
+
 def get_timezone(element, link):
     s = element.find('div', {'class': 'calendar-notice'})
     if s is None:
@@ -116,3 +137,54 @@ def get_timezone(element, link):
     cal_notice = s.text
     matched = re.search('All times (.+?). Subject to change.', cal_notice)
     return matched.group(1) if matched else ''
+
+
+def get_id(tag):
+    name = tag.text
+    # FIXME get ids working with BS
+    links = list(filter(lambda s: "http://www.milb.com/index.jsp?sid" in s, str(tag).split(" ")))
+    assert len(links) == 1, f"Could not parse the team id: {name}"
+    return links[0].split("sid=")[1].rstrip('"')
+
+
+def write_to_file(data, path):
+    with open(path, 'w') as f:
+        newline_list = map(lambda d: d + '\n', data)
+        f.writelines(newline_list)
+
+
+def date_string_to_timestamp(year, month, day, time_str):
+    """
+    example parameters (2019, 1, 31, "9:45 PM MST")
+    """
+    TZ_OFFSET_MAP = {
+        'EDT': 'US/Eastern',
+        'EST': 'US/Eastern',
+        'ET': 'US/Eastern',
+        'CDT': 'US/Central',
+        'CST': 'US/Central',
+        'CT': 'US/Central',
+        'MDT': 'US/Mountain',
+        'MST': 'US/Mountain',
+        'MT': 'US/Mountain',
+        'PDT': 'US/Pacific',
+        'PST': 'US/Pacific',
+        'PT': 'US/Pacific'
+    }
+    year = int(year)
+    month = int(month)
+    day = int(day)
+
+    if 'TBD' in time_str:
+        logging.info("Found a TBD game. Timestamp will be recorded as 3AM Eastern.")
+        dt = datetime(year=year, month=month, day=day, hour=3)
+        return int(timezone('US/Eastern').localize(dt).timestamp())
+
+    time_arr = time_str.split(' ')
+    assert len(time_arr) == 3
+    time = datetime.strptime(' '.join(time_arr[:2]), '%I:%M %p')
+    tz = TZ_OFFSET_MAP[time_arr[2]]
+
+    dt = datetime(year=year, month=month, day=day, hour=time.hour, minute=time.minute)
+    local_dt = timezone(tz).localize(dt)
+    return int(local_dt.timestamp())

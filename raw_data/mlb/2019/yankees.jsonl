@@ -23,9 +23,9 @@
 {"team": "yankees", "opponent": "angels", "opponent_tri_codes": "LAA", "is_home_game": false, "game_start_time": 1556071620}
 {"team": "yankees", "opponent": "angels", "opponent_tri_codes": "LAA", "is_home_game": false, "game_start_time": 1556158020}
 {"team": "yankees", "opponent": "angels", "opponent_tri_codes": "LAA", "is_home_game": false, "game_start_time": 1556240820}
-{"team": "yankees", "opponent": "giants", "opponent_tri_codes": "SF", "is_home_game": false, "game_start_time": 0}
+{"team": "yankees", "opponent": "giants", "opponent_tri_codes": "SF", "is_home_game": false, "game_start_time": 1556262000}
 {"team": "yankees", "opponent": "giants", "opponent_tri_codes": "SF", "is_home_game": false, "game_start_time": 1556395500}
-{"team": "yankees", "opponent": "giants", "opponent_tri_codes": "SF", "is_home_game": false, "game_start_time": 0}
+{"team": "yankees", "opponent": "giants", "opponent_tri_codes": "SF", "is_home_game": false, "game_start_time": 1556434800}
 {"team": "yankees", "opponent": "d-backs", "opponent_tri_codes": "ARI", "is_home_game": false, "game_start_time": 1556674800}
 {"team": "yankees", "opponent": "d-backs", "opponent_tri_codes": "ARI", "is_home_game": false, "game_start_time": 1556739600}
 {"team": "yankees", "opponent": "twins", "opponent_tri_codes": "MIN", "is_home_game": true, "game_start_time": 1556924700}
@@ -108,7 +108,7 @@
 {"team": "yankees", "opponent": "d-backs", "opponent_tri_codes": "ARI", "is_home_game": true, "game_start_time": 1564527900}
 {"team": "yankees", "opponent": "d-backs", "opponent_tri_codes": "ARI", "is_home_game": true, "game_start_time": 1564592700}
 {"team": "yankees", "opponent": "red sox", "opponent_tri_codes": "BOS", "is_home_game": true, "game_start_time": 1564787100}
-{"team": "yankees", "opponent": "red sox", "opponent_tri_codes": "BOS", "is_home_game": true, "game_start_time": 0}
+{"team": "yankees", "opponent": "red sox", "opponent_tri_codes": "BOS", "is_home_game": true, "game_start_time": 1564815600}
 {"team": "yankees", "opponent": "red sox", "opponent_tri_codes": "BOS", "is_home_game": true, "game_start_time": 1564959900}
 {"team": "yankees", "opponent": "orioles", "opponent_tri_codes": "BAL", "is_home_game": false, "game_start_time": 1565046300}
 {"team": "yankees", "opponent": "orioles", "opponent_tri_codes": "BAL", "is_home_game": false, "game_start_time": 1565132700}
