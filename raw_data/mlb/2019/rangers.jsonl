@@ -6,7 +6,7 @@
 {"team": "rangers", "opponent": "astros", "opponent_tri_codes": "HOU", "is_home_game": true, "game_start_time": 1554336300}
 {"team": "rangers", "opponent": "angels", "opponent_tri_codes": "LAA", "is_home_game": false, "game_start_time": 1554430020}
 {"team": "rangers", "opponent": "angels", "opponent_tri_codes": "LAA", "is_home_game": false, "game_start_time": 1554516420}
-{"team": "rangers", "opponent": "angels", "opponent_tri_codes": "LAA", "is_home_game": false, "game_start_time": 1554599220}
+{"team": "rangers", "opponent": "angels", "opponent_tri_codes": "LAA", "is_home_game": false, "game_start_time": 1554581100}
 {"team": "rangers", "opponent": "angels", "opponent_tri_codes": "LAA", "is_home_game": false, "game_start_time": 1554667620}
 {"team": "rangers", "opponent": "d-backs", "opponent_tri_codes": "ARI", "is_home_game": false, "game_start_time": 1554860400}
 {"team": "rangers", "opponent": "d-backs", "opponent_tri_codes": "ARI", "is_home_game": false, "game_start_time": 1554946800}
@@ -73,10 +73,10 @@
 {"team": "rangers", "opponent": "indians", "opponent_tri_codes": "CLE", "is_home_game": true, "game_start_time": 1560902700}
 {"team": "rangers", "opponent": "indians", "opponent_tri_codes": "CLE", "is_home_game": true, "game_start_time": 1560989100}
 {"team": "rangers", "opponent": "indians", "opponent_tri_codes": "CLE", "is_home_game": true, "game_start_time": 1561053900}
-{"team": "rangers", "opponent": "white sox", "opponent_tri_codes": "CWS", "is_home_game": true, "game_start_time": 1561165500}
-{"team": "rangers", "opponent": "white sox", "opponent_tri_codes": "CWS", "is_home_game": true, "game_start_time": 1561230300}
-{"team": "rangers", "opponent": "white sox", "opponent_tri_codes": "CWS", "is_home_game": true, "game_start_time": 1561334700}
-{"team": "rangers", "opponent": "tigers", "opponent_tri_codes": "DET", "is_home_game": false, "game_start_time": 0}
+{"team": "rangers", "opponent": "white sox", "opponent_tri_codes": "CWS", "is_home_game": true, "game_start_time": 1561161900}
+{"team": "rangers", "opponent": "white sox", "opponent_tri_codes": "CWS", "is_home_game": true, "game_start_time": 1561251900}
+{"team": "rangers", "opponent": "white sox", "opponent_tri_codes": "CWS", "is_home_game": true, "game_start_time": 1561316700}
+{"team": "rangers", "opponent": "tigers", "opponent_tri_codes": "DET", "is_home_game": false, "game_start_time": 1561446000}
 {"team": "rangers", "opponent": "tigers", "opponent_tri_codes": "DET", "is_home_game": false, "game_start_time": 1561590600}
 {"team": "rangers", "opponent": "tigers", "opponent_tri_codes": "DET", "is_home_game": false, "game_start_time": 1561655400}
 {"team": "rangers", "opponent": "rays", "opponent_tri_codes": "TB", "is_home_game": false, "game_start_time": 1561763400}
