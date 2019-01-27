@@ -30,11 +30,20 @@ All games are scraped, home and away. This duplication allows for filling in mis
 TODO change this script to a main file
 `$ python3 mlb_trip_planner_data/scrapers/multiprocess_runner.py`
 
-## Output
-Data is written to `raw_data/{level}/{year}/{team}.jsonl`
+Data is written to `raw_data/{level}/{year_month_day}/{team}.jsonl`
 
 # Testing
 Testing is limited. Run with:
 `$python3 -m pytest`
 
 Scraping data depends on constant html elements and website uptime. Logging for data quality alerts. Some data may need to be fixed manually.
+
+# Packages
+## Resources
+Shared data constants and metadata used in multiple packages. Functions in scrapers write to resources/. These functions could be pulled into a resource generation file in the future.
+
+## Scrapers
+Extraction modules. Used to scrape game schedule data from MLB and minor league sites. The entry point is multiprocess_runner, which concurrently scrapes a target site.
+
+## Transformers
+Transforms raw data. The first module process does validation and cleansing. The second set of modules gets data into the format for loading into a database: currently, ElasticSearch. planned, neo4j.

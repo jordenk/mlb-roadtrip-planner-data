@@ -2,6 +2,7 @@ import json
 import logging
 import os
 
+from datetime import datetime
 from multiprocessing import Pool, cpu_count
 from scrapers import get_mlb_games, write_minor_league_team_ids, get_minor_league_games
 from splinter import Browser
@@ -9,10 +10,10 @@ from splinter import Browser
 
 # TODO Set up a central logger with configurable level
 logging.basicConfig(level=logging.INFO)
-# TODO Make this command line parameters
+# TODO Change to command line parameter
 YEAR = 2019
 
-# CONSTANTS
+# CONSTANTS Some of these may need to be in a shared file
 TEAM_COUNT = 30
 START_MONTH = 3  # Different leagues start in different months, so this could be configurable.
 END_MONTH = 9
@@ -35,7 +36,7 @@ def execute_parallel_mlb():
         "rangers", "rays", "reds", "redsox", "rockies", "royals", "tigers", "twins", "whitesox", "yankees"
         ]
 
-    OUTPUT_DIRECTORY = f"raw_data/mlb/{YEAR}"
+    OUTPUT_DIRECTORY = f"raw_data/mlb/{get_current_utc_date()}"
 
     parameter_object_list = list(map(lambda t: TeamScheduleScraperData(t, YEAR, START_MONTH, END_MONTH, OUTPUT_DIRECTORY), mlb_teams))
     assert len(parameter_object_list) == TEAM_COUNT, "Incorrect number of teams found. Stopping execution."
@@ -55,7 +56,7 @@ def execute_parallel_minor_league(id_file_name):
         ids = list(map(lambda i: i.rstrip('\n'), data))
     assert len(ids) == TEAM_COUNT, f"Incorrect number of ids read from file: {id_file_name}"
 
-    OUTPUT_DIRECTORY = f"raw_data/{id_file_name.split('_ids')[0]}/{YEAR}"
+    OUTPUT_DIRECTORY = f"raw_data/{id_file_name.split('_ids')[0]}/{get_current_utc_date()}"
     parameter_object_list = list(map(lambda id: TeamScheduleScraperData(id, YEAR, START_MONTH, END_MONTH, OUTPUT_DIRECTORY), ids))
 
     os.makedirs(OUTPUT_DIRECTORY, exist_ok=True)
@@ -64,6 +65,10 @@ def execute_parallel_minor_league(id_file_name):
 
     logging.info("... Finished writing schedules")
     inspect_jsonl_files(OUTPUT_DIRECTORY, MINOR_SEASON_GAMES_COUNT)
+
+
+def get_current_utc_date():
+    return datetime.utcnow().strftime('%Y_%m_%d')
 
 
 def inspect_jsonl_files(directory, game_count):
