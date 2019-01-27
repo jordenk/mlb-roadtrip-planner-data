@@ -55,14 +55,14 @@
 {"team": "padres", "opponent": "yankees", "opponent_tri_codes": "NYY", "is_home_game": false, "game_start_time": 1559082900}
 {"team": "padres", "opponent": "yankees", "opponent_tri_codes": "NYY", "is_home_game": false, "game_start_time": 1559149500}
 {"team": "padres", "opponent": "marlins", "opponent_tri_codes": "MIA", "is_home_game": true, "game_start_time": 1559355000}
-{"team": "padres", "opponent": "marlins", "opponent_tri_codes": "MIA", "is_home_game": true, "game_start_time": 1559372400}
+{"team": "padres", "opponent": "marlins", "opponent_tri_codes": "MIA", "is_home_game": true, "game_start_time": 1559441400}
 {"team": "padres", "opponent": "marlins", "opponent_tri_codes": "MIA", "is_home_game": true, "game_start_time": 1559513400}
 {"team": "padres", "opponent": "phillies", "opponent_tri_codes": "PHI", "is_home_game": true, "game_start_time": 1559614200}
 {"team": "padres", "opponent": "phillies", "opponent_tri_codes": "PHI", "is_home_game": true, "game_start_time": 1559700600}
 {"team": "padres", "opponent": "phillies", "opponent_tri_codes": "PHI", "is_home_game": true, "game_start_time": 1559763600}
 {"team": "padres", "opponent": "nationals", "opponent_tri_codes": "WSH", "is_home_game": true, "game_start_time": 1559873400}
 {"team": "padres", "opponent": "nationals", "opponent_tri_codes": "WSH", "is_home_game": true, "game_start_time": 1559959800}
-{"team": "padres", "opponent": "nationals", "opponent_tri_codes": "WSH", "is_home_game": true, "game_start_time": 1559977200}
+{"team": "padres", "opponent": "nationals", "opponent_tri_codes": "WSH", "is_home_game": true, "game_start_time": 1560046200}
 {"team": "padres", "opponent": "nationals", "opponent_tri_codes": "WSH", "is_home_game": true, "game_start_time": 1560111000}
 {"team": "padres", "opponent": "giants", "opponent_tri_codes": "SF", "is_home_game": false, "game_start_time": 1560303900}
 {"team": "padres", "opponent": "giants", "opponent_tri_codes": "SF", "is_home_game": false, "game_start_time": 1560390300}
@@ -159,4 +159,4 @@
 {"team": "padres", "opponent": "dodgers", "opponent_tri_codes": "LAD", "is_home_game": true, "game_start_time": 1569526800}
 {"team": "padres", "opponent": "d-backs", "opponent_tri_codes": "ARI", "is_home_game": false, "game_start_time": 1569634800}
 {"team": "padres", "opponent": "d-backs", "opponent_tri_codes": "ARI", "is_home_game": false, "game_start_time": 1569715800}
-{"team": "padres", "opponent": "d-backs", "opponent_tri_codes": "ARI", "is_home_game": false, "game_start_time": 1569780600}
+{"team": "padres", "opponent": "d-backs", "opponent_tri_codes": "ARI", "is_home_game": false, "game_start_time": 1569784200}

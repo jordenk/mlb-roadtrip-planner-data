@@ -78,7 +78,7 @@ def write_minor_league_team_ids(browser, output_directory, link='http://www.milb
 def get_minor_league_games(browser, id, year, month):
     """
     Scrapes one month of games from the calendar view. Returns a list of dicts.
-    Double header support is not enabled.
+    Double header support is not enabled. Times aren't supported, just dates.
     """
     games = []
     link = f"http://www.milb.com/schedule/index.jsp?sid={id}&m={month}&y={year}"
@@ -87,7 +87,6 @@ def get_minor_league_games(browser, id, year, month):
 
     dirty_name = list(filter(lambda s: 'team_name_short' in s, str(soup).splitlines()))[0]
     clean_short_name = dirty_name.replace('\t', '').replace('"', '').rstrip(',').split(':')[1]
-    tz = get_timezone(soup, link)
 
     date_rows = soup.findAll('td')
     for row in date_rows:
@@ -100,12 +99,11 @@ def get_minor_league_games(browser, id, year, month):
             opponent_arr = game_info[0].text.strip().split(' ')
             vs_or_at = opponent_arr[0]
             opponent = opponent_arr[1]
-            time = f"{game_info[1].text.strip()} {tz}"
             classes = game_elem[0].attrs.get('class')
             is_home_game = None
-            if 'home' in classes and vs_or_at == 'vs':
+            if 'home' in classes or vs_or_at == 'vs':
                 is_home_game = True
-            elif 'away' in classes and vs_or_at == '@':
+            elif 'away' in classes or vs_or_at == '@':
                 is_home_game = False
             else:
                 logging.error(f"See: {link} Date: {year}-{month}-{date}")
@@ -114,10 +112,10 @@ def get_minor_league_games(browser, id, year, month):
             # Game time handling
             timestamp = 0
             try:
-                timestamp = date_string_to_timestamp(year, month, date, time)
+                timestamp = date_string_to_timestamp(year, month, date, 'TBD')
             except Exception as e:
                 logging.error(f"error processing data from: {link}")
-                logging.warn(f"timestamp will be recorded as {timestamp}, see: team - {opponent} opponent - {opponent} {time}")
+                logging.warn(f"timestamp will be recorded as {timestamp}, see: team - {team} opponent - {opponent}")
                 logging.error(str(e))
 
             game = {'team': clean_short_name.lower(), 'opponent': opponent.lower(), 'opponent_tri_codes': None, 'is_home_game': is_home_game, 'game_start_time': timestamp}
@@ -128,15 +126,6 @@ def get_minor_league_games(browser, id, year, month):
 # Helper functions
 def get_content_list(soup_list):
     return list(filter(lambda f: f, map(lambda m: m.string, soup_list)))
-
-
-def get_timezone(element, link):
-    s = element.find('div', {'class': 'calendar-notice'})
-    if s is None:
-        logging.error(f"Could not find timezone: {link}")
-    cal_notice = s.text
-    matched = re.search('All times (.+?). Subject to change.', cal_notice)
-    return matched.group(1) if matched else ''
 
 
 def get_id(tag):
@@ -176,7 +165,7 @@ def date_string_to_timestamp(year, month, day, time_str):
     day = int(day)
 
     if 'TBD' in time_str:
-        logging.info("Found a TBD game. Timestamp will be recorded as 3AM Eastern.")
+        logging.debug("Found a TBD game. Timestamp will be recorded as 3AM Eastern.")
         dt = datetime(year=year, month=month, day=day, hour=3)
         return int(timezone('US/Eastern').localize(dt).timestamp())
 

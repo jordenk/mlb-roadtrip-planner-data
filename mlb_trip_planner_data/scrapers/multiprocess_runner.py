@@ -17,6 +17,7 @@ TEAM_COUNT = 30
 START_MONTH = 3  # Different leagues start in different months, so this could be configurable.
 END_MONTH = 9
 MLB_SEASON_GAMES_COUNT = 162
+MINOR_SEASON_GAMES_COUNT = 141
 MINOR_LEAGUE_ID_PATH = 'mlb_trip_planner_data/resources'
 MINOR_LEAGUE_LEVELS = ['aaa', 'aa', 'a_adv', 'a']  # TODO Enum
 
@@ -55,8 +56,14 @@ def execute_parallel_minor_league(id_file_name):
     assert len(ids) == TEAM_COUNT, f"Incorrect number of ids read from file: {id_file_name}"
 
     OUTPUT_DIRECTORY = f"raw_data/{id_file_name.split('_ids')[0]}/{YEAR}"
-    parameter_object_list = list(map(lambda id: TeamScheduleScraperData(id, YEAR, START_MONTH, END_MONTH, OUTPUT_DIRECTORY, id, ids)))
-    print(OUTPUT_DIRECTORY)
+    parameter_object_list = list(map(lambda id: TeamScheduleScraperData(id, YEAR, START_MONTH, END_MONTH, OUTPUT_DIRECTORY), ids))
+
+    os.makedirs(OUTPUT_DIRECTORY, exist_ok=True)
+
+    parallel_execution(write_games_to_file_system, parameter_object_list)
+
+    logging.info("... Finished writing schedules")
+    inspect_jsonl_files(OUTPUT_DIRECTORY, MINOR_SEASON_GAMES_COUNT)
 
 
 def inspect_jsonl_files(directory, game_count):
@@ -66,7 +73,7 @@ def inspect_jsonl_files(directory, game_count):
         lines = get_file_lines(os.path.join(directory, jsonl))
         # Don't assert here, just warn. Data will be cleaned up later. International opening days may cause errors here.
         if lines != game_count:
-            logging.warning(f"Incorrect lines (games): {lines} != {MLB_SEASON_GAMES_COUNT} for {jsonl}")
+            logging.warning(f"Incorrect lines (games): {lines} != {game_count} for {jsonl}")
 
 
 def get_file_lines(file_path):
@@ -89,20 +96,18 @@ def write_games_to_file_system(team_data) -> None:
     """
     browser = Browser('chrome', headless=True)
     try:
-        logging.info(f"{team_data.team} - {team_data.year} Starting write...")
+        logging.info(f"{team_data.id} - {team_data.year} Starting write...")
         for month in list(range(team_data.start_month, team_data.end_month + 1)):
             # Handle branching here so we don't have to pass functions with the multiprocess module.
             data = None
-            if type(team_data) == BaseScheduleScraperData:
-                data = get_mlb_games(browser, team_data.team, team_data.year, month)
-            elif type(team_data) == MinorLeagueScheduleScraperData:
-                data = get_minor_league_games(browser, team_data.id, team_data.year, month)
+            if 'mlb' in team_data.output_directory:
+                data = get_mlb_games(browser, team_data.id, team_data.year, month)
             else:
-                raise TypeError(f"{type(team_data)} is not a supported type.")
-            write_dict_list_to_file(data, f"{team_data.output_directory}/{team_data.team}.jsonl")
+                data = get_minor_league_games(browser, team_data.id, team_data.year, month)
+            write_dict_list_to_file(data, f"{team_data.output_directory}/{team_data.id}.jsonl")
     finally:
         browser.quit()
-    logging.info(f"{team_data.team} - {team_data.year} Completed successfully.")
+    logging.info(f"{team_data.id} - {team_data.year} Completed successfully.")
 
 
 class TeamScheduleScraperData:
@@ -110,21 +115,14 @@ class TeamScheduleScraperData:
     Class used to group fields used for parallel functions.
     """
     def __init__(self, id, year, start_month, end_month, output_directory):
-        self.team = id
+        self.id = id
         self.year = year
         self.start_month = start_month
         self.end_month = end_month
         self.output_directory = output_directory
 
 
-# class MinorLeagueScheduleScraperData(BaseScheduleScraperData):
-#     def __init__(self, team, year, start_month, end_month, output_directory, id):
-#         super().__init__(team, year, start_month, end_month, output_directory)
-#         self.id = id
-
-
 # Call scripts here TODO to a main function
-
 # Write MLB schedules. Team names are wrapped in the function.
 # execute_parallel_mlb()
 
@@ -135,4 +133,10 @@ if set(resource_levels) != set(MINOR_LEAGUE_LEVELS):
     write_minor_league_team_ids(browser, MINOR_LEAGUE_ID_PATH)
 
 # Write mlb schedules
-execute_parallel_minor_league('a_adv_ids.txt')
+# execute_parallel_minor_league('aaa_ids.txt')
+# execute_parallel_minor_league('aa_ids.txt')
+# execute_parallel_minor_league('a_adv_ids.txt')
+# execute_parallel_minor_league('a_ids.txt')
+
+# Rerun a single scrape if needed
+# write_games_to_file_system(TeamScheduleScraperData('athletics', YEAR, START_MONTH, END_MONTH, f'raw_data/mlb/{YEAR}'))

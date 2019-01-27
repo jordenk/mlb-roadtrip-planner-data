@@ -6,10 +6,10 @@ The runner uses the Selenium web driver with chrome to scrape baseball schedules
 
 Complete:
 - MLB data extraction
+- Minor leagues data extraction
 
 In-progress:
 - MLB data cleaning
-- Minor leagues data extraction
 
 Planned:
 - Handle international games
@@ -25,7 +25,9 @@ Mac:
 `$ brew cask install chromedriver`
 TODO package this rather than requiring an install
 
-# Data Population
+# Scrape data
+All games are scraped, home and away. This duplication allows for filling in missing data and during the transform step.
+TODO change this script to a main file
 `$ python3 mlb_trip_planner_data/scrapers/multiprocess_runner.py`
 
 ## Output
