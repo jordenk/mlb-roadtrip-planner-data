@@ -24,10 +24,9 @@ def get_mlb_games(browser, team, year, month):
 
         # Get all games in a day- double header consideration.
         opponent_names = get_content_list(row.find_all('div', {'class': 'opponent-name'}))
-        opponent_tri_codes = get_content_list(row.find_all('div', {'class': 'opponent-tricode'}))
         primary_times = get_content_list(row.find_all('div', {'class': 'primary-time'}))
 
-        for on, otc, pt in zip(opponent_names, opponent_tri_codes, primary_times):
+        for on, pt in zip(opponent_names, primary_times):
             timestamp = 0
             try:
                 timestamp = date_string_to_timestamp(year, month, day, pt)
@@ -35,7 +34,7 @@ def get_mlb_games(browser, team, year, month):
                 logging.error(f"error processing data from: {link}")
                 logging.info(f"timestamp will be recorded as {timestamp}, see: {on} {otc} {pt}")
                 logging.error(str(e))
-            game = {'team': team.lower(), 'opponent': on.lower(), 'opponent_tri_codes': otc, 'is_home_game': is_home_game, 'game_start_time': timestamp}
+            game = {'team': team.lower(), 'opponent': on.lower(), 'is_home_game': is_home_game, 'game_start_time': timestamp}
             games.append(game)
     return games
 
@@ -118,7 +117,7 @@ def get_minor_league_games(browser, id, year, month):
                 logging.warn(f"timestamp will be recorded as {timestamp}, see: team - {team} opponent - {opponent}")
                 logging.error(str(e))
 
-            game = {'team': clean_short_name.lower(), 'opponent': opponent.lower(), 'opponent_tri_codes': None, 'is_home_game': is_home_game, 'game_start_time': timestamp}
+            game = {'team': clean_short_name.lower(), 'opponent': opponent.lower(), 'is_home_game': is_home_game, 'game_start_time': timestamp}
             games.append(game)
     return games
 
